@@ -16,4 +16,20 @@ export abstract class MgtBaseComponent extends LitElement {
     });
     return this.dispatchEvent(event);
   }
+
+  private static _disableShadowRoot: boolean = false;
+  public static toggleShadowRoot(disabled: boolean = !this._disableShadowRoot) {
+    this._disableShadowRoot = disabled;
+  }
+
+  private _disableShadowRoot: boolean = false;
+  public toggleShadowRoot(disabled: boolean = !this._disableShadowRoot) {
+    this._disableShadowRoot = disabled;
+  }
+
+  protected createRenderRoot() {
+    return (this.constructor as (typeof MgtBaseComponent))._disableShadowRoot || this._disableShadowRoot
+      ? this
+      : super.createRenderRoot();
+  }
 }
